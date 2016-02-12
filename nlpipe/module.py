@@ -13,15 +13,22 @@ class NLPipeModule(app.Task):
     version = "0.0"
     input_doc_type = None # defaults to text (raw) input
     output_doc_type = None # defaults to name
-    
-    def run(self, id):
+    doc =False # if true, pass document rather than just input
+
+    def __init__(self, *args, **kwargs):
+        super(NLPipeModule, self).__init__(*args, **kwargs)
+        self.process = self.run
+        self.run = self.run_wrapper
+
+
+    def run_wrapper(self, id):
         if self.input_doc_type is None:
             # task is based on raw input
             doc = get_input(id)
         else:
             doc = get_document(id, self.input_doc_type)
         begin_time = datetime.datetime.now()
-        result = self.process(doc)
+        result = self.process(doc if self.doc else doc.input)
         end_time = datetime.datetime.now()
 
         provenance  = dict(module=self.name, version=self.version,
