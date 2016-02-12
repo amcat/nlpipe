@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import datetime
 
 from .celery import app
-from .document import get_document, get_input, store_result
+from .document import get_document, get_input, store_result, exists
 
 class NLPipeModule(app.Task):
     """
@@ -20,8 +20,9 @@ class NLPipeModule(app.Task):
         self.process = self.run
         self.run = self.run_wrapper
 
-
     def run_wrapper(self, id):
+        if exists(doc_type, id):
+            return
         if self.input_doc_type is None:
             # task is based on raw input
             doc = get_input(id)

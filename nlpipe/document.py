@@ -52,6 +52,10 @@ def store_result(doc_type, id, pipeline, result):
               doc_type=doc_type,
               body = body,
               id = id)
+
+def exists(doc_type, id):
+    return _es.exists(index=esconfig.ES_RESULT_INDEX,
+                      doc_type=doc_type, id=id)
     
 class Document(object):
     def __init__(self, id, pipeline, input, input_type, input_fields=None):
