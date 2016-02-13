@@ -20,8 +20,13 @@ class NLPipeModule(app.Task):
         self.process = self.run
         self.run = self.run_wrapper
 
-    def run_wrapper(self, id):
-        if exists(doc_type, id):
+    @property
+    def doc_type(self):
+        return self.output_doc_type or self.name.split(".")[-1]        
+
+
+    def run_wrapper(self, id, check_exists=True):
+        if check_exists and exists(self.doc_type, id):
             return
         if self.input_doc_type is None:
             # task is based on raw input
@@ -36,6 +41,5 @@ class NLPipeModule(app.Task):
                            input_type=doc.input_type, input_fields=doc.input_fields,
                            begin_time=begin_time, end_time=end_time)
         
-        doc_type = self.output_doc_type or self.name.split(".")[-1]
         
-        store_result(doc_type, id, doc.pipeline + [provenance], result)
+        store_result(self.doc_type, id, doc.pipeline + [provenance], result)

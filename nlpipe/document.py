@@ -42,8 +42,10 @@ def get_input(id):
     text = "\n\n".join("\n\n".join(res['fields'][f]) for f in esconfig.ES_INPUT_FIELDS)
     return Document(id, [], text, input_type, input_fields)
 
-def get_document(id, input_type):
-    raise NotImplementedError("Sorry!")
+def get_document(id, doc_type):
+    res= _es.get(index=esconfig.ES_RESULT_INDEX,
+                 doc_type=doc_type, id=id)
+    return Document(id, res['_source']['pipeline'], res['_source']['result'], doc_type)
 
 def store_result(doc_type, id, pipeline, result):
     _check_mapping(doc_type)
