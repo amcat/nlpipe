@@ -42,6 +42,14 @@ def get_input(id):
     text = "\n\n".join("\n\n".join(res['fields'][f]) for f in esconfig.ES_INPUT_FIELDS)
     return Document(id, [], text, input_type, input_fields)
 
+def get_cached_documents(ids, doc_type):
+    res = _es.mget(index=esconfig.ES_RESULT_INDEX,
+                   doc_type=doc_type, body={"ids": ids})
+    for doc in res['docs']:
+        if doc['found']:
+            d = Document(int(doc['_id']), doc['_source']['pipeline'], doc['_source']['result'], doc_type)
+            yield d.id, d
+    
 def get_document(id, doc_type):
     res= _es.get(index=esconfig.ES_RESULT_INDEX,
                  doc_type=doc_type, id=id)
