@@ -67,6 +67,14 @@ def exists(doc_type, id):
     return _es.exists(index=esconfig.ES_RESULT_INDEX,
                       doc_type=doc_type, id=id)
     
+def count_cached(ids):
+    body = {'query': {u'filtered': {u'filter': {'ids': {u'values': ids}}}},
+            'aggregations': {u'aggregation': {u'terms': {u'field': u'_type'}}}}
+    res = _es.search(index=esconfig.ES_RESULT_INDEX, body=body, size=0)
+    for bucket in res['aggregations']['aggregation']['buckets']:
+        yield bucket['key'], bucket['doc_count']
+    
+
 class Document(object):
     def __init__(self, id, pipeline, input, input_type, input_fields=None):
         self.id = id
