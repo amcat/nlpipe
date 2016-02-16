@@ -16,6 +16,7 @@ Results are stored in a separate document type per module (version), and are ass
 import datetime
 
 from elasticsearch import Elasticsearch
+from elasticsearch.helpers import scan
 
 from . import esconfig
 
@@ -42,6 +43,17 @@ def get_input(id):
     text = "\n\n".join("\n\n".join(res['fields'][f]) for f in esconfig.ES_INPUT_FIELDS)
     return Document(id, [], text, input_type, input_fields)
 
+def get_input_ids(query, limit=None):
+    """Get the ids of existing input documents that match a query"""
+    docs = scan(_es, index=esconfig.ES_INPUT_INDEX,
+                doc_type=esconfig.ES_INPUT_DOCTYPE,
+                query=query, size=(limit or 1000), fields="")
+    for i, a in enumerate(docs):
+        if limit and i >= limit:
+            return
+        yield int(a['_id'])
+
+    
 def get_cached_documents(ids, doc_type):
     res = _es.mget(index=esconfig.ES_RESULT_INDEX,
                    doc_type=doc_type, body={"ids": ids})
@@ -75,6 +87,15 @@ def count_cached(ids):
         yield bucket['key'], bucket['doc_count']
     
 
+def get_cached_document_ids(ids, doc_type):
+    """Get the ids of documents that have been parsed with this doc_type"""
+    res = _es.mget(index=esconfig.ES_RESULT_INDEX,
+                   doc_type=doc_type, body={"ids": ids}, _source=False)
+    for doc in res['docs']:
+        if doc['found']:
+            yield int(doc['_id'])
+
+    
 class Document(object):
     def __init__(self, id, pipeline, input, input_type, input_fields=None):
         self.id = id

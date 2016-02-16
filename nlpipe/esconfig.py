@@ -1,6 +1,6 @@
 import os
-ES_HOST=os.environ.get("XTAS_ES_HOST", 'localhost')
-ES_PORT=int(os.environ.get("XTAS_ES_PORT", 9200))
+ES_HOST=os.environ.get("NLPIPE_ES_HOST", 'localhost')
+ES_PORT=int(os.environ.get("NLPIPE_ES_PORT", 9200))
 
 ES_INPUT_INDEX = "amcat"
 ES_INPUT_DOCTYPE = "article"

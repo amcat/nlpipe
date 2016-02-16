@@ -11,7 +11,7 @@ _BROKER_PORT=int(os.environ.get('NLPIPE_BROKER_PORT', 5672))
 
 BROKER_URL = 'amqp://{user}:{passwd}@{host}:{port}//'.format(
     user=_BROKER_USERNAME, passwd=_BROKER_PASSWORD, host=_BROKER_HOST, port=_BROKER_PORT)
-CELERY_RESULT_BACKEND = 'amqp'
+CELERY_RESULT_BACKEND = 'rpc'
 
 CELERY_QNAME = os.environ.get('NLPIPE_CELERY_QUEUE', 'nlpipe')
 CELERY_DEFAULT_QUEUE = CELERY_QNAME

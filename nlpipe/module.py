@@ -4,6 +4,8 @@ import datetime
 
 from .celery import app
 from .document import get_document, get_input, store_result, exists
+import logging
+import time
 
 class NLPipeModule(app.Task):
     """
@@ -24,7 +26,6 @@ class NLPipeModule(app.Task):
     def doc_type(self):
         return self.output_doc_type or self.name.split(".")[-1]        
 
-
     def run_wrapper(self, id, check_exists=True):
         if check_exists and exists(self.doc_type, id):
             return
@@ -34,6 +35,8 @@ class NLPipeModule(app.Task):
         else:
             doc = get_document(id, self.input_doc_type)
         begin_time = datetime.datetime.now()
+        t = time.time()
+        logging.info("({self.name}) Processing {id}".format(**locals()))
         result = self.process(doc if self.doc else doc.input)
         end_time = datetime.datetime.now()
 
@@ -41,5 +44,6 @@ class NLPipeModule(app.Task):
                            input_type=doc.input_type, input_fields=doc.input_fields,
                            begin_time=begin_time, end_time=end_time)
         
-        
+        logging.info("({self.name}) Storing {id} ({time:.2f}s)".format(time=time.time()-t, **locals()))
         store_result(self.doc_type, id, doc.pipeline + [provenance], result)
+        logging.info("({self.name}) Finished {id} ({time:.2f}s)".format(time=time.time()-t, **locals()))
