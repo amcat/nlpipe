@@ -1,4 +1,12 @@
+"""
+Global elasticsearch configuration for nlpipe
+
+This sets the elasticsearch host, port, index, type, and mapping.
+Site-configuration should be done using environment variables where possible.
+"""
+
 import os
+
 ES_HOST=os.environ.get("NLPIPE_ES_HOST", 'localhost')
 ES_PORT=int(os.environ.get("NLPIPE_ES_PORT", 9200))
 

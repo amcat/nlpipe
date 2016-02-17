@@ -1,13 +1,13 @@
-from .document import get_document, get_cached_documents, get_cached_document_ids
+from .backend import get_document, get_cached_documents, get_cached_document_ids
 from elasticsearch.exceptions import NotFoundError
 
 def get_result(id, task):
     try:
-        return get_document(id, task.doc_type)
+        return task.get_result(id)
     except NotFoundError:
         t = task.delay(id)
         t.wait()
-        return get_document(id, task.doc_type)
+        return task.get_result(id)
         
 
 def get_results(ids, task, only_cached=False):
