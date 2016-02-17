@@ -1,6 +1,6 @@
 from subprocess import Popen, PIPE
 
-from .module import NLPipeModule
+from .module import NLPSystemModule
 from .celery import app
 
 @app.task(base=NLPSystemModule, cmd="$NEWSREADER_HOME/run_parser.sh")
