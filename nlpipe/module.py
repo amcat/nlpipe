@@ -78,6 +78,7 @@ class NLPSystemModule(NLPipeModule):
     Tasks will be called with the result, and may return a postprocessed text.
     If tasks return None, the result of the system call will be stored
     """
+    abstract = True
     cmd = None
     def _process(self, text):
         if self.cmd is None:

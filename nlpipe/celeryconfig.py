@@ -19,7 +19,7 @@ CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
 
 CELERY_QUEUES = (
     Queue(CELERY_QNAME, Exchange('default'), routing_key=CELERY_QNAME),
-#    Queue('background', Exchange('default'), routing_key='background'),
+    Queue('background', durable=False, routing_key='background'),
 )
 
 CELERY_TASK_SERIALIZER = 'json'
