@@ -4,10 +4,12 @@ from distutils.core import setup
 
 setup(
     name="nlpipe",
+    version="0.1",
     description="Simple NLP Pipelinining using Elastic and Celery",
     author="Wouter van Atteveldt",
     author_email="wouter@vanatteveldt.com",
     packages=["nlpipe", "nlpipe.scripts"],
+    keywords = ["NLP", "pipelining"],
     classifiers=[
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
