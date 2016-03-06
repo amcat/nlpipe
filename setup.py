@@ -10,6 +10,7 @@ setup(
     author_email="wouter@vanatteveldt.com",
     packages=["nlpipe", "nlpipe.scripts"],
     keywords = ["NLP", "pipelining"],
+    download_url="https://github.com/amcat/nlpipe/tarball/0.1",
     classifiers=[
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
