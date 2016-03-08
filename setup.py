@@ -19,5 +19,7 @@ setup(
     install_requires=[
         "celery>=3.0.0",
         "elasticsearch",
+        "KafNafParserPy",
+        "pynlpl",
     ],
 )
