@@ -2,11 +2,13 @@
 Test the Frog tagger/lemmatizer functions and task.
 """
 
+from __future__ import unicode_literals
+
 import logging
 from unittest import SkipTest
 import os.path
 import socket;
-from cStringIO import StringIO
+from io import BytesIO
 
 from nose.tools import assert_equal, assert_in
 
@@ -39,7 +41,7 @@ def test_frog_saf():
     _check_frog()
     naf_str = frog._process("Mark Rutte werkte gisteren nog bij de  Vrije Universiteit in Amsterdam")
 
-    naf = KafNafParser(StringIO(naf_str))
+    naf = KafNafParser(BytesIO(naf_str))
     lemmata = {t.get_lemma() for t in naf.get_terms()}
     assert_equal(lemmata, {"Mark_Rutte", "werken", "gisteren", "nog", "bij",
                            "de", "vrij", "universiteit", "in", "Amsterdam"})

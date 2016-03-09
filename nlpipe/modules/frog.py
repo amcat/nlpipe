@@ -4,7 +4,7 @@ Wrapper to call the frog server and parse the results as NAF
 Assumes that a frog server is listening on FROG_HOST, defaulting to localhost:9887
 """
 import os
-from cStringIO import StringIO
+from io import BytesIO
 
 from pynlpl.clients.frogclient import FrogClient
 from KafNafParserPy import *
@@ -66,6 +66,6 @@ def frog_naf(text):
 
     naf.create_linguistic_processor("text", "Frog tokenizer", get_frog_version())
     naf.create_linguistic_processor("term", "Frog MBT", get_frog_version())
-    s = StringIO()
+    s = BytesIO()
     naf.dump(s)
     return s.getvalue()

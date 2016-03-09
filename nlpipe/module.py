@@ -87,6 +87,7 @@ class NLPSystemModule(NLPipeModule):
         (out, err) = p2.communicate(text.encode("utf-8"))
         if p2.returncode != 0:
             raise Exception("Error on calling shell command: {cmd} (see logs)".format(**locals()))
+        out = out.decode("utf-8")
         postprocessed = self.process(out)
         return out if postprocessed is None else postprocessed
 

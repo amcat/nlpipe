@@ -25,7 +25,7 @@ def test_pipeline_multiple():
         assert_equal({}, pipeline.get_results([id, id2], uppertask, only_cached=True))
         uppertask.delay(id).get()
         results = pipeline.get_results([id, id2], uppertask, only_cached=True)
-        assert_equal([id], results.keys())
+        assert_equal([id], list(results.keys()))
         assert_equal("EEN TEST", results[id].text)
         results = pipeline.get_results([id, id2], uppertask, only_cached=False)
         assert_equal({id, id2}, set(results.keys()))

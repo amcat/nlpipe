@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from nose.tools import assert_equal, assert_not_equal, assert_raises
 from nlpipe import module
 
