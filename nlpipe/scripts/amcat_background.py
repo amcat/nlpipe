@@ -23,6 +23,6 @@ task = modules[args.module]
 
 body = {u'filter': {'terms': {u'sets': args.sets}}}
 print("Assigning {max} articles from set(s) {args.sets} for processing by {task.name}"
-      .format(max=("up to {}".format(args.max) if args.max else "all"), **locals()))
+      .format(max=("up to {}".format(args.max) if args.max is not None else "all"), **locals()))
 ids = list(get_input_ids(body))
 parse_background(ids, task, max=args.max)

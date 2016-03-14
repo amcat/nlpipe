@@ -24,7 +24,7 @@ def parse_background(ids, task, max=None):
     parsed = set(get_cached_document_ids(ids, task.doc_type))
     todo = list(set(ids) - set(parsed))
     toparse = todo
-    if max and (max < len(todo)):
+    if (max is not None) and (max < len(todo)):
         toparse = sample(toparse, max)
     logging.info("{nparsed}/{n} articles already parsed, assigning {ntoparse} out of {ntodo}"
           .format(n=len(ids), nparsed=len(parsed), ntoparse=len(toparse), ntodo=len(todo)))
