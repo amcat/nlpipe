@@ -99,7 +99,7 @@ def _count_cached(ids):
         yield bucket['key'], bucket['doc_count']
     
 def count_cached(ids):
-    batches = (ids[i:i+1000] for i in xrange(0, len(ids), 1000))
+    batches = (ids[i:i+1000] for i in range(0, len(ids), 1000))
     result = {}
     for batch in batches:
         for key, n in _count_cached(batch):
