@@ -25,6 +25,13 @@ _es = Elasticsearch([{"host": esconfig.ES_HOST, "port": esconfig.ES_PORT}])
 
 _CHECKED_MAPPINGS = set()
 
+def set_esconfig(host, port):
+    """
+    Set the (global) es config
+    """
+    global _es
+    _es = Elasticsearch([{"host": host, "port": int(port)}])
+
 def _check_mapping(doc_type):
     if doc_type not in _CHECKED_MAPPINGS:
         index = esconfig.ES_RESULT_INDEX
@@ -71,6 +78,9 @@ def get_document(id, doc_type):
 
 def store_result(doc_type, id, pipeline, result):
     _check_mapping(doc_type)
+    if isinstance(result, bytes):
+        # elastic wants 'text', not 'bytes'
+        result = result.decode("utf-8")
     body = dict(id=id, pipeline=pipeline, result=result)
     _es.index(index=esconfig.ES_RESULT_INDEX,
               doc_type=doc_type,
