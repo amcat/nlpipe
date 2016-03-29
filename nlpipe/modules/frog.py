@@ -6,6 +6,9 @@ Assumes that a frog server is listening on FROG_HOST, defaulting to localhost:98
 With 'la machine', this can be done with the following command:
 sudo docker run -dp 9887:9887 proycon/lamachine frog -S 9887 --skip=pm
 
+Note that on some machines you need to add --net=host to get port forwarding to work,
+possibly related to https://github.com/docker/docker/issues/13914
+
 See: http://languagemachines.github.io/frog/
 """
 import os
