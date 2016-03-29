@@ -104,7 +104,7 @@ def count_cached(ids):
     for batch in batches:
         for key, n in _count_cached(batch):
             result[key] = result.get(key, 0) + n
-    return result.iteritems()
+    return result.items()
 
 def get_cached_document_ids(ids, doc_type):
     """Get the ids of documents that have been parsed with this doc_type"""
