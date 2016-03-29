@@ -8,7 +8,7 @@ setup(
     description="Simple NLP Pipelinining using Elastic and Celery",
     author="Wouter van Atteveldt",
     author_email="wouter@vanatteveldt.com",
-    packages=["nlpipe", "nlpipe.scripts"],
+    packages=["nlpipe", "nlpipe.scripts", "nlpipe.modules"],
     keywords = ["NLP", "pipelining"],
     download_url="https://github.com/amcat/nlpipe/tarball/0.1",
     classifiers=[
