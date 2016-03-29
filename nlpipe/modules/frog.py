@@ -2,6 +2,11 @@
 Wrapper to call the frog server and parse the results as NAF
 
 Assumes that a frog server is listening on FROG_HOST, defaulting to localhost:9887
+
+With 'la machine', this can be done with the following command:
+sudo docker run -dp 9887:9887 proycon/lamachine frog -S 9887 --skip=pm
+
+See: http://languagemachines.github.io/frog/
 """
 import os
 from io import BytesIO
