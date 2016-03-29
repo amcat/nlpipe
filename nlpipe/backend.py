@@ -91,13 +91,20 @@ def exists(doc_type, id):
     return _es.exists(index=esconfig.ES_RESULT_INDEX,
                       doc_type=doc_type, id=id)
     
-def count_cached(ids):
+def _count_cached(ids):
     body = {'query': {u'filtered': {u'filter': {'ids': {u'values': ids}}}},
             'aggregations': {u'aggregation': {u'terms': {u'field': u'_type'}}}}
     res = _es.search(index=esconfig.ES_RESULT_INDEX, body=body, size=0)
     for bucket in res['aggregations']['aggregation']['buckets']:
         yield bucket['key'], bucket['doc_count']
     
+def count_cached(ids):
+    batches = (ids[i:i+1000] for i in xrange(0, len(ids), 1000))
+    result = {}
+    for batch in batches:
+        for key, n in _count_cached(batch):
+            result[key] = result.get(key, 0) + n
+    return result.iteritems()
 
 def get_cached_document_ids(ids, doc_type):
     """Get the ids of documents that have been parsed with this doc_type"""

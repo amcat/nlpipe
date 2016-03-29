@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name="nlpipe",
-    version="0.23",
+    version="0.24",
     description="Simple NLP Pipelinining using Elastic and Celery",
     author="Wouter van Atteveldt",
     author_email="wouter@vanatteveldt.com",
