@@ -20,7 +20,7 @@ def get_results(ids, task, only_cached=False):
                 docs[id] = get_result(id, task)
     return docs
 
-def parse_background(ids, task, max=None):
+def parse_background(ids, task, max=None, queue='background'):
     parsed = set(get_cached_document_ids(ids, task.doc_type))
     todo = list(set(ids) - set(parsed))
     toparse = todo
@@ -32,4 +32,4 @@ def parse_background(ids, task, max=None):
     for i, id in enumerate(toparse):
         if i >0 and not (i % 1000):
             logging.info("... Assigning {i}".format(**locals()))
-        task.apply_async(args=[id], queue='background')
+        task.apply_async(args=[id], queue=queue)

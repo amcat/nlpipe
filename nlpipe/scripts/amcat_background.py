@@ -16,6 +16,7 @@ parser.add_argument('module', help='nlpipe module (task) name ({})'.format(", ".
                     choices=modules, metavar="module")
 parser.add_argument('sets', type=int, nargs='+', help='Article set id(s)')
 parser.add_argument('--max', type=int, help='maximum number of articles to assign')
+parser.add_argument('--queue', default='background', help='Celery queue to put the articles on')
 
 args = parser.parse_args()
 
@@ -25,4 +26,4 @@ body = {u'filter': {'terms': {u'sets': args.sets}}}
 print("Assigning {max} articles from set(s) {args.sets} for processing by {task.name}"
       .format(max=("up to {}".format(args.max) if args.max is not None else "all"), **locals()))
 ids = list(get_input_ids(body))
-parse_background(ids, task, max=args.max)
+parse_background(ids, task, max=args.max, queue=args.queue)
