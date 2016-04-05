@@ -88,8 +88,14 @@ def store_result(doc_type, id, pipeline, result):
               id = id)
 
 def exists(doc_type, id):
-    return _es.exists(index=esconfig.ES_RESULT_INDEX,
-                      doc_type=doc_type, id=id)
+    return _es.exists(index=esconfig.ES_RESULT_INDEX, doc_type=doc_type, id=id)
+
+def delete_result(doc_type, id):
+    _es.delete(index=esconfig.ES_RESULT_INDEX, doc_type=doc_type, id=id)
+    
+
+def _split_list(items, batch_size=1000):
+    return (items[i:i+1000] for i in range(0, len(items), 1000))
     
 def _count_cached(ids):
     body = {'query': {u'filtered': {u'filter': {'ids': {u'values': ids}}}},
@@ -99,18 +105,23 @@ def _count_cached(ids):
         yield bucket['key'], bucket['doc_count']
     
 def count_cached(ids):
-    batches = (ids[i:i+1000] for i in range(0, len(ids), 1000))
     result = {}
-    for batch in batches:
+    for batch in _split_list(ids):
         for key, n in _count_cached(batch):
             result[key] = result.get(key, 0) + n
     return result.items()
 
-def get_cached_document_ids(ids, doc_type):
-    """Get the ids of documents that have been parsed with this doc_type"""
+
+    
+def _get_cached_document_ids(ids, doc_type):
     res = _es.mget(index=esconfig.ES_RESULT_INDEX,
                    doc_type=doc_type, body={"ids": ids}, _source=False)
     for doc in res['docs']:
         if doc['found']:
             yield doc['_id']
 
+def get_cached_document_ids(ids, doc_type):
+    """Get the ids of documents that have been parsed with this doc_type"""
+    for batch in _split_list(ids):
+        for id in _get_cached_document_ids(batch, doc_type):
+            yield id

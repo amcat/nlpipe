@@ -86,7 +86,7 @@ class NLPSystemModule(NLPipeModule):
         p2 = subprocess.Popen(self.cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         (out, err) = p2.communicate(text.encode("utf-8"))
         if p2.returncode != 0:
-            raise Exception("Error on calling shell command: {cmd} (see logs)".format(**locals()))
+            raise Exception("Error on calling shell command: {self.cmd} (see logs)".format(**locals()))
         out = out.decode("utf-8")
         postprocessed = self.process(out)
         return out if postprocessed is None else postprocessed
