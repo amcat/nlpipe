@@ -95,7 +95,7 @@ def delete_result(doc_type, id):
     
 
 def _split_list(items, batch_size=1000):
-    return (items[i:i+1000] for i in range(0, len(items), 1000))
+    return (items[i:i+batch_size] for i in range(0, len(items), batch_size))
     
 def _count_cached(ids):
     body = {'query': {u'filtered': {u'filter': {'ids': {u'values': ids}}}},
