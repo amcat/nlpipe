@@ -24,7 +24,10 @@ args = parser.parse_args()
 task = modules[args.module]
 
 if args.adhoc:
-    text = " ".join(args.target)
+    if args.target == ["-"]:
+        text = sys.stdin.read()
+    else:
+        text = " ".join(args.target)
     print("Parsing {text!r} using {task}".format(**locals()), file=sys.stderr)
     result = task._process(text)
     print(result)
