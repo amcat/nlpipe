@@ -31,7 +31,7 @@ def test_corenlp2naf():
     terms = {t.get_id(): t.get_lemma() for t in naf.get_terms()}
     assert_equal(set(terms.values()), {"John", "attack", "I", "in", "London", "hit", "he", "back", "."})
     london = [t for t in naf.get_terms() if t.get_lemma() == 'London'][0]
-    assert_equal(london.get_pos(), 'M')
+    assert_equal(london.get_pos(), 'R')
     assert_equal(london.get_morphofeat(), 'NNP')
 
     ents = {}
