@@ -4,7 +4,7 @@ from .module import NLPSystemModule, NLPipeModule
 from .celery import app
 from .modules import frog as _frog, corenlp 
 
-@app.task(base=NLPSystemModule, cmd="$NEWSREADER_HOME/run_parser.sh")
+@app.task(base=NLPSystemModule, cmd="$NEWSREADER_HOME/run_parser.sh parse")
 def morphosyntactic(text):
     """
     Run the newsreader morphosyntactic parser.
