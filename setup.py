@@ -21,5 +21,7 @@ setup(
         "elasticsearch",
         "KafNafParserPy",
         "pynlpl",
+        "corenlp_xml",
+        "unidecode",
     ],
 )
