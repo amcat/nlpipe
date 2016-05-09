@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name="nlpipe",
-    version="0.28",
+    version="0.29",
     description="Simple NLP Pipelinining using Elastic and Celery",
     author="Wouter van Atteveldt",
     author_email="wouter@vanatteveldt.com",
@@ -21,7 +21,10 @@ setup(
         "elasticsearch",
         "KafNafParserPy",
         "pynlpl",
-        "corenlp_xml",
+        "corenlp-xml>=1.0.3",
         "unidecode",
     ],
+    dependency_links=[
+        "https://github.com/vanatteveldt/corenlp-xml-lib/tarball/master#egg=corenlp-xml-1.0.3"        
+    ]
 )
