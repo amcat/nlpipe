@@ -29,7 +29,7 @@ class NLPipeModule(app.Task):
     input_doc_type = None # defaults to text (raw) input
     output_doc_type = None # defaults to name__version
     doc =False # if true, pass document rather than just input
-
+    
     def __init__(self, *args, **kwargs):
         super(NLPipeModule, self).__init__(*args, **kwargs)
         self.process = self.run
@@ -42,10 +42,11 @@ class NLPipeModule(app.Task):
         return "{name}__{version}".format(name=self.name.split(".")[-1], version=self.version.replace(".", "_"))
 
     def run_wrapper(self, id, check_exists=True):
+        self.id = id
         if check_exists and exists(self.doc_type, id):
             return
         if self.input_doc_type is None:
-            # task is based on raw input
+            # task is bsed on raw input
             doc = get_input(id)
         else:
             doc = get_document(id, self.input_doc_type)

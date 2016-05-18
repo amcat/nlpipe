@@ -2,7 +2,7 @@ from subprocess import Popen, PIPE
 
 from .module import NLPSystemModule, NLPipeModule
 from .celery import app
-from .modules import frog as _frog, corenlp 
+from .modules import frog as _frog, corenlp, amcatmeta as _amcatmeta
 
 @app.task(base=NLPSystemModule, cmd="$NEWSREADER_HOME/run_parser.sh parse")
 def morphosyntactic(text):
@@ -13,6 +13,20 @@ def morphosyntactic(text):
     root newsreader folder, containing a run_parser script
     """
     pass
+
+@app.task(base=NLPSystemModule, cmd="$NEWSREADER_HOME/run_parser.sh annotate", input_doc_type="morphosyntactic__0_0")
+def annotate(text):
+    """
+    Run the newsreader opinion mining.
+
+    Requires NEWSREADER_HOME to be defined and point at the
+    root newsreader folder, containing a run_parser script
+    """
+    pass
+
+@app.task(base=NLPipeModule, input_doc_type="annotate__0_0", bind=True)
+def amcatmeta(self, doc):
+    return _amcatmeta.add_amcatmeta(doc, self.id)
 
 @app.task(base=NLPipeModule)
 def frog(text):

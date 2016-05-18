@@ -42,13 +42,16 @@ def _check_mapping(doc_type):
             _es.indices.put_mapping(index=index, doc_type=doc_type, body=mapping)
         _CHECKED_MAPPINGS.add(doc_type)
 
+def get_input_fields(id, fields):
+    res = _es.get(index=esconfig.ES_INPUT_INDEX,
+                  doc_type=esconfig.ES_INPUT_DOCTYPE,
+                  id=id, fields=fields)
+    return res['fields']
+        
 def get_input(id):
     input_type = esconfig.ES_INPUT_DOCTYPE,
     input_fields = esconfig.ES_INPUT_FIELDS
-    res = _es.get(index=esconfig.ES_INPUT_INDEX,
-                  doc_type=input_type,
-                  id=id, fields=input_fields)
-    fields = res['fields']
+    fields = get_input_fields(id, input_fields)
     text = "\n\n".join("\n\n".join(fields[f]) for f in input_fields if f in fields)
     return Document(id, [], text, input_type, input_fields)
 
