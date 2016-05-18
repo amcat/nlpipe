@@ -9,6 +9,10 @@ from nlpipe.pipeline import parse_background
 from nlpipe.backend import get_input_ids
 from nlpipe.celery import app
 
+import logging
+FORMAT = '[%(asctime)-15s] %(message)s'
+logging.basicConfig(format=FORMAT, level=logging.INFO)
+
 modules = {n.split(".")[-1]: t for (n,t) in app.tasks.iteritems() if n.startswith("nlpipe")}
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -23,7 +27,8 @@ args = parser.parse_args()
 task = modules[args.module]
 
 body = {u'filter': {'terms': {u'sets': args.sets}}}
-print("Assigning {max} articles from set(s) {args.sets} for processing by {task.name}"
+logging.info("Assigning {max} articles from set(s) {args.sets} for processing by {task.name}"
       .format(max=("up to {}".format(args.max) if args.max is not None else "all"), **locals()))
 ids = list(get_input_ids(body))
+logging.info("... Found {} articles".format(len(ids)))
 parse_background(ids, task, max=args.max, queue=args.queue)
