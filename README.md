@@ -1,5 +1,9 @@
 [![Build Status](https://travis-ci.org/amcat/nlpipe.svg?branch=master)](https://travis-ci.org/amcat/nlpipe)
 
+# NOTE: This repository is obsolete
+
+I'm working to replace nlpipe with a more standalone and much simpler system (i.e. less dependency on AmCAT/elastic/celery), see vanatteveldt/nlpipe
+
 # Simple NLP Pipelining based on elastic + celery
 
 NLPipe is a very simple caching NLP pipelining system built on elasticsearch (backend) and celery (job management)
